@@ -13,6 +13,10 @@ import android.util.Log;
 
 import java.util.concurrent.ScheduledExecutorService;
 
+import georgikoemdzhiev.sensorlistener.database.AccDataPoint;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 public class SensorService extends Service implements SensorEventListener {
     private static final String TAG = "SensorService";
 
@@ -20,6 +24,8 @@ public class SensorService extends Service implements SensorEventListener {
     // 3 = @Deprecated Orientation
     //private final static int SENS_GYROSCOPE = Sensor.TYPE_GYROSCOPE;
 
+    RealmConfiguration realmConfig;
+    Realm realm ;
 
     SensorManager mSensorManager;
 
@@ -33,6 +39,8 @@ public class SensorService extends Service implements SensorEventListener {
 
         gravity = new double[3];
         linear_acceleration = new double[3];
+        realmConfig = new RealmConfiguration.Builder(this).build();
+        realm = Realm.getInstance(realmConfig);
 
         return super.onStartCommand(intent, flags, startId);
 
@@ -130,6 +138,16 @@ public class SensorService extends Service implements SensorEventListener {
             double z = Math.abs(Math.round(linear_acceleration[2]));
 
             Log.d(TAG, "TimeStamp: " + event.timestamp + " X: " + x + " Y: " + y + " Z: " + z);
+
+            AccDataPoint datapoint = new AccDataPoint();
+            datapoint.setX(x);
+            datapoint.setY(y);
+            datapoint.setZ(z);
+
+            // Persist your data easily
+            realm.beginTransaction();
+            realm.copyToRealm(datapoint);
+            realm.commitTransaction();
         }
         //client.sendSensorData(event.sensor.getType(), event.accuracy, event.timestamp, event.values);
     }
