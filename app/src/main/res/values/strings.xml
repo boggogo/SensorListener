@@ -2,4 +2,6 @@
     <string name="app_name">SensorListener</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_delete_all_data">Delete all data</string>
+    <string name="title_activity_descriptive_analisys">DescriptiveAnalisysActivity</string>
+    <string name="action_descriptive_analysis">Desc.Analysis</string>
 </resources>

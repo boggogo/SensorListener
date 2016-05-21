@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="georgikoemdzhiev.sensorlistener"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="georgikoemdzhiev.sensorlistener">
 
     <application
         android:allowBackup="true"
@@ -10,12 +10,18 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".SensorService"/>
+
+        <service android:name=".SensorService" />
+
+        <activity
+            android:name=".DescriptiveAnalisysActivity"
+            android:label="@string/title_activity_descriptive_analisys"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

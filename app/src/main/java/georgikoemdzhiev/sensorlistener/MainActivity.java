@@ -126,6 +126,13 @@ public class MainActivity extends AppCompatActivity   {
             realm.deleteAll();
             realm.commitTransaction();
             mTextView.setText("");
+
+            return true;
+        }
+
+        if(id == R.id.action_DescAnalysis){
+            startActivity(new Intent(MainActivity.this,DescriptiveAnalisysActivity.class));
+            return true;
         }
 
 
