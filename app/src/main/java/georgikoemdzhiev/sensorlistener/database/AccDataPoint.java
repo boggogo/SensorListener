@@ -9,6 +9,7 @@ public class AccDataPoint extends RealmObject {
     private double x;
     private double y;
     private double z;
+    private String timestamp;
 
     public double getX() {
         return x;
@@ -33,4 +34,13 @@ public class AccDataPoint extends RealmObject {
     public void setZ(double z) {
         this.z = z;
     }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
 }
+

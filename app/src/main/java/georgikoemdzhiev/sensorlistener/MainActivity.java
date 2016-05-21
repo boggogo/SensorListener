@@ -96,11 +96,12 @@ public class MainActivity extends AppCompatActivity   {
                         final double x = dataPoint.getX();
                         final double y = dataPoint.getY();
                         final double z = dataPoint.getZ();
+                        final String timeStamp = dataPoint.getTimestamp();
 
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                mTextView.append("X:" + x + "Y:" + y+ "Z:" + z + "\n");
+                                mTextView.append("TimeStamp: " + timeStamp + "  " + "X: " + x + "  " + "Y: " + y + "  " + "Z: " + z + "\n");
                             }
                         });
                     }

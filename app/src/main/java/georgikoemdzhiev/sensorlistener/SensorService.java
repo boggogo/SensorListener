@@ -11,6 +11,10 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ScheduledExecutorService;
 
 import georgikoemdzhiev.sensorlistener.database.AccDataPoint;
@@ -137,12 +141,24 @@ public class SensorService extends Service implements SensorEventListener {
             double y = Math.abs(Math.round(linear_acceleration[1]));
             double z = Math.abs(Math.round(linear_acceleration[2]));
 
-            Log.d(TAG, "TimeStamp: " + event.timestamp + " X: " + x + " Y: " + y + " Z: " + z);
+
+
+            Log.d(TAG, "TimeStamp: " + event.timestamp + " X: " + " " + x + "  " + "Y: " + y + "  " +"Z: " + z);
 
             AccDataPoint datapoint = new AccDataPoint();
             datapoint.setX(x);
             datapoint.setY(y);
             datapoint.setZ(z);
+
+            long timeInMillis = (new Date()).getTime()
+                    + (event.timestamp - System.nanoTime()) / 1000000L;
+
+            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.UK);
+
+
+            Date date=new Date(timeInMillis);
+
+            datapoint.setTimestamp(formatter.format(date));
 
             // Persist your data easily
             realm.beginTransaction();
