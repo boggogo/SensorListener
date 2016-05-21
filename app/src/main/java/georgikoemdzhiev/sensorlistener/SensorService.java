@@ -145,10 +145,10 @@ public class SensorService extends Service implements SensorEventListener {
 
             Log.d(TAG, "TimeStamp: " + event.timestamp + " X: " + " " + x + "  " + "Y: " + y + "  " +"Z: " + z);
 
-            AccDataPoint datapoint = new AccDataPoint();
-            datapoint.setX(x);
-            datapoint.setY(y);
-            datapoint.setZ(z);
+            AccDataPoint accDataPoint = new AccDataPoint();
+            accDataPoint.setX(x);
+            accDataPoint.setY(y);
+            accDataPoint.setZ(z);
 
             long timeInMillis = (new Date()).getTime()
                     + (event.timestamp - System.nanoTime()) / 1000000L;
@@ -158,11 +158,11 @@ public class SensorService extends Service implements SensorEventListener {
 
             Date date=new Date(timeInMillis);
 
-            datapoint.setTimestamp(formatter.format(date));
+            accDataPoint.setTimestamp(formatter.format(date));
 
             // Persist your data easily
             realm.beginTransaction();
-            realm.copyToRealm(datapoint);
+            realm.copyToRealm(accDataPoint);
             realm.commitTransaction();
         }
         //client.sendSensorData(event.sensor.getType(), event.accuracy, event.timestamp, event.values);
