@@ -150,11 +150,9 @@ public class SensorService extends Service implements SensorEventListener {
             accDataPoint.setY(y);
             accDataPoint.setZ(z);
 
-            long timeInMillis = (new Date()).getTime()
-                    + (event.timestamp - System.nanoTime()) / 1000000L;
+            long timeInMillis = (new Date()).getTime() + (event.timestamp - System.nanoTime()) / 1000000L;
 
             DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.UK);
-
 
             Date date=new Date(timeInMillis);
 
