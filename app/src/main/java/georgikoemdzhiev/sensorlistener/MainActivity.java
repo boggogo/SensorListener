@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import io.realm.RealmResults;
 public class MainActivity extends AppCompatActivity   {
     private static final String TAG = MainActivity.class.getSimpleName();
     private TextView mTextView;
+    private ScrollView mScrollView;
     RealmConfiguration realmConfig;
     Realm realm ;
 
@@ -29,7 +32,7 @@ public class MainActivity extends AppCompatActivity   {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        //mScrollView = (ScrollView)findViewById(R.id.scrillView);
 
         final Intent startServiceIntenr = new Intent(this,SensorService.class);
 
@@ -46,17 +49,23 @@ public class MainActivity extends AppCompatActivity   {
 
                 if(isMyServiceRunning(SensorService.class)){
                     stopService(startServiceIntenr);
-                    Toast.makeText(MainActivity.this,"Stopping service...", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this,"Stopping service...", Toast.LENGTH_SHORT).show();
+                    ((Button)view).setText("Stopped");
                 }else{
                     startService(startServiceIntenr);
-                    Toast.makeText(MainActivity.this,"Starting service...", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this,"Starting service...", Toast.LENGTH_SHORT).show();
+                    ((Button)view).setText("Started");
                 }
 
             }
         });
     }
 
-
+    /**
+     * Method that checks if a service is currently running.
+     * @param serviceClass service that we want to check
+     * @return value if service is running
+     */
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
