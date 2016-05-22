@@ -151,12 +151,12 @@ public class SensorService extends Service implements SensorEventListener {
             accDataPoint.setZ(z);
 
             long timeInMillis = (new Date()).getTime() + (event.timestamp - System.nanoTime()) / 1000000L;
-
-            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.UK);
-
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.UK);
             Date date=new Date(timeInMillis);
+            String usingTimeStampValue = formatter.format(date);
 
-            accDataPoint.setTimestamp(formatter.format(date));
+            String usingSystemTime = formatter.format(new Date());
+            accDataPoint.setTimestamp(usingSystemTime);
 
             // Persist your data easily
             realm.beginTransaction();
