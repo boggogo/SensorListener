@@ -136,11 +136,9 @@ public class SensorService extends Service implements SensorEventListener {
             linear_acceleration[1] = event.values[1] - gravity[1];
             linear_acceleration[2] = event.values[2] - gravity[2];
 
-
             double x = Math.abs(Math.round(linear_acceleration[0]));
             double y = Math.abs(Math.round(linear_acceleration[1]));
             double z = Math.abs(Math.round(linear_acceleration[2]));
-
 
 
             Log.d(TAG, "TimeStamp: " + event.timestamp + " X: " + " " + x + "  " + "Y: " + y + "  " +"Z: " + z);
@@ -150,10 +148,10 @@ public class SensorService extends Service implements SensorEventListener {
             accDataPoint.setY(y);
             accDataPoint.setZ(z);
 
-            long timeInMillis = (new Date()).getTime() + (event.timestamp - System.nanoTime()) / 1000000L;
+            //long timeInMillis = (new Date()).getTime() + (event.timestamp - System.nanoTime()) / 1000000L;
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.UK);
-            Date date=new Date(timeInMillis);
-            String usingTimeStampValue = formatter.format(date);
+            //Date date=new Date(timeInMillis);
+            //String usingTimeStampValue = formatter.format(date);
 
             String usingSystemTime = formatter.format(new Date());
             accDataPoint.setTimestamp(usingSystemTime);

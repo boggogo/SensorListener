@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import georgikoemdzhiev.sensorlistener.Utils.DStatistics;
 import georgikoemdzhiev.sensorlistener.database.AccDataPoint;
@@ -18,6 +20,9 @@ import io.realm.RealmResults;
 
 public class DescriptiveAnalisysActivity extends AppCompatActivity {
     private static final String TAG = DescriptiveAnalisysActivity.class.getSimpleName();
+    private ScrollView mScrollView;
+    private TextView mTextView;
+
     private RealmConfiguration realmConfig;
     private Realm realm;
     private DStatistics descriptiveStatistics;
@@ -37,6 +42,8 @@ public class DescriptiveAnalisysActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+        mScrollView = (ScrollView)findViewById(R.id.scrollViewDesc);
+        mTextView = (TextView)findViewById(R.id.desStatisticsTextView);
 
         realmConfig = new RealmConfiguration.Builder(this).build();
         realm = Realm.getInstance(realmConfig);
@@ -44,6 +51,7 @@ public class DescriptiveAnalisysActivity extends AppCompatActivity {
         descriptiveStatistics = new DStatistics();
 
         readDataFromDB();
+        logDescriptiveData();
 
     }
 
@@ -66,7 +74,10 @@ public class DescriptiveAnalisysActivity extends AppCompatActivity {
             @Override
             public void onSuccess() {
                 // lod data
-                Log.d(TAG,descriptiveStatistics.toString());
+                mTextView.setText("");
+                // cut the first 20 readings (misleading) from the data
+
+                mTextView.setText(descriptiveStatistics.toString());
             }
         });
     }
