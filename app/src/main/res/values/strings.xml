@@ -4,4 +4,5 @@
     <string name="action_delete_all_data">Delete all data</string>
     <string name="title_activity_descriptive_analisys">DescriptiveAnalisysActivity</string>
     <string name="action_descriptive_analysis">Desc.Analysis</string>
+    <string name="action_show_diagram">Show Diagram</string>
 </resources>

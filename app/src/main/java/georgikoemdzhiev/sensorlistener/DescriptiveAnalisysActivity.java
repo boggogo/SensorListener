@@ -12,6 +12,15 @@ import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+
+import java.util.ArrayList;
+
 import georgikoemdzhiev.sensorlistener.Utils.DStatistics;
 import georgikoemdzhiev.sensorlistener.database.AccDataPoint;
 import io.realm.Realm;
@@ -26,6 +35,9 @@ public class DescriptiveAnalisysActivity extends AppCompatActivity {
     private RealmConfiguration realmConfig;
     private Realm realm;
     private DStatistics descriptiveStatistics;
+    private ArrayList<Float> xValues = new ArrayList<>();
+    private ArrayList<String> xValStr = new ArrayList<>();
+    private  LineChart mLineChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +46,9 @@ public class DescriptiveAnalisysActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        // in this example, a LineChart is initialized from xml
+        mLineChart = (LineChart) findViewById(R.id.chart);
+
         mScrollView = (ScrollView)findViewById(R.id.scrollViewDesc);
         mTextView = (TextView)findViewById(R.id.desStatisticsTextView);
 
@@ -67,6 +74,8 @@ public class DescriptiveAnalisysActivity extends AppCompatActivity {
                     final double z = dataPoint.getZ();
                     final String timeStamp = dataPoint.getTimestamp();
 
+                    xValues.add((float) x);
+                    xValStr.add(timeStamp);
                     descriptiveStatistics.add(x, y, z);
                 }
             }
@@ -99,6 +108,52 @@ public class DescriptiveAnalisysActivity extends AppCompatActivity {
         if(id == R.id.action_refresh_statistics){
             logDescriptiveData();
             return true;
+        }
+
+        if(id == R.id.action_show_diagram){
+            mTextView.setVisibility(View.INVISIBLE);
+            mLineChart.setVisibility(View.VISIBLE);
+
+            ArrayList<Entry> xValuesChart = new ArrayList<Entry>();
+            //ArrayList<Entry> valsComp2 = new ArrayList<Entry>();
+
+            //ArrayList<String> xVals = new ArrayList<String>();
+
+            for(int i = 0; i<xValues.size();i++){
+                Entry newEntry = new Entry(xValues.get(i),i);
+                xValuesChart.add(newEntry);
+                //xVals.add(xValStr.get(i));
+            }
+
+//            Entry c1e1 = new Entry(100.000f, 0); // 0 == quarter 1
+//            valsComp1.add(c1e1);
+//            Entry c1e2 = new Entry(50.000f, 1); // 1 == quarter 2 ...
+//            valsComp1.add(c1e2);
+//            // and so on ...
+
+            //Entry c2e1 = new Entry(120.000f, 0); // 0 == quarter 1
+            //valsComp2.add(c2e1);
+            //Entry c2e2 = new Entry(110.000f, 1); // 1 == quarter 2 ...
+            //valsComp2.add(c2e2);
+
+            LineDataSet setComp1 = new LineDataSet(xValuesChart, "X values");
+            setComp1.setAxisDependency(YAxis.AxisDependency.LEFT);
+            //LineDataSet setComp2 = new LineDataSet(valsComp2, "Company 2");
+           // setComp2.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+            // use the interface ILineDataSet
+            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+            dataSets.add(setComp1);
+            //dataSets.add(setComp2);
+
+
+
+
+            //xVals.add("1.Q"); xVals.add("2.Q"); xVals.add("3.Q"); xVals.add("4.Q");
+
+            LineData data = new LineData(xValStr, dataSets);
+            mLineChart.setData(data);
+            mLineChart.invalidate(); // refresh
         }
         return super.onOptionsItemSelected(item);
     }
