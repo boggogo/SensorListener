@@ -1,11 +1,8 @@
 package georgikoemdzhiev.sensorlistener;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,7 +33,8 @@ public class DescriptiveAnalisysActivity extends AppCompatActivity {
     private Realm realm;
     private DStatistics descriptiveStatistics;
     private ArrayList<Float> xValues = new ArrayList<>();
-    private ArrayList<String> xValStr = new ArrayList<>();
+    private ArrayList<Float> yValues = new ArrayList<>();
+    private ArrayList<String> chartTimeStampAlongXchrtAxies = new ArrayList<>();
     private  LineChart mLineChart;
 
     @Override
@@ -75,7 +73,10 @@ public class DescriptiveAnalisysActivity extends AppCompatActivity {
                     final String timeStamp = dataPoint.getTimestamp();
 
                     xValues.add((float) x);
-                    xValStr.add(timeStamp);
+                    yValues.add((float)y);
+
+                    chartTimeStampAlongXchrtAxies.add(timeStamp);
+
                     descriptiveStatistics.add(x, y, z);
                 }
             }
@@ -115,14 +116,17 @@ public class DescriptiveAnalisysActivity extends AppCompatActivity {
             mLineChart.setVisibility(View.VISIBLE);
 
             ArrayList<Entry> xValuesChart = new ArrayList<Entry>();
+            ArrayList<Entry> yValuesChart = new ArrayList<Entry>();
             //ArrayList<Entry> valsComp2 = new ArrayList<Entry>();
 
             //ArrayList<String> xVals = new ArrayList<String>();
 
+            // Crate an Entry for the X value from the xValues arrayList and add it to the chart values arrayList
             for(int i = 0; i<xValues.size();i++){
                 Entry newEntry = new Entry(xValues.get(i),i);
                 xValuesChart.add(newEntry);
-                //xVals.add(xValStr.get(i));
+                yValuesChart.add(new Entry(yValues.get(i),i));
+
             }
 
 //            Entry c1e1 = new Entry(100.000f, 0); // 0 == quarter 1
@@ -136,14 +140,20 @@ public class DescriptiveAnalisysActivity extends AppCompatActivity {
             //Entry c2e2 = new Entry(110.000f, 1); // 1 == quarter 2 ...
             //valsComp2.add(c2e2);
 
-            LineDataSet setComp1 = new LineDataSet(xValuesChart, "X values");
-            setComp1.setAxisDependency(YAxis.AxisDependency.LEFT);
+            LineDataSet setX = new LineDataSet(xValuesChart, "X values");
+            setX.setAxisDependency(YAxis.AxisDependency.LEFT);
+            setX.setColors(new int[] { R.color.red1}, DescriptiveAnalisysActivity.this);
+
+            LineDataSet setY = new LineDataSet(yValuesChart, "Y values");
+            setY.setAxisDependency(YAxis.AxisDependency.LEFT);
+            setY.setColors(new int[] { R.color.colorPrimaryDark}, DescriptiveAnalisysActivity.this);
             //LineDataSet setComp2 = new LineDataSet(valsComp2, "Company 2");
            // setComp2.setAxisDependency(YAxis.AxisDependency.LEFT);
 
             // use the interface ILineDataSet
             ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-            dataSets.add(setComp1);
+            dataSets.add(setX);
+            dataSets.add(setY);
             //dataSets.add(setComp2);
 
 
@@ -151,7 +161,7 @@ public class DescriptiveAnalisysActivity extends AppCompatActivity {
 
             //xVals.add("1.Q"); xVals.add("2.Q"); xVals.add("3.Q"); xVals.add("4.Q");
 
-            LineData data = new LineData(xValStr, dataSets);
+            LineData data = new LineData(chartTimeStampAlongXchrtAxies, dataSets);
             mLineChart.setData(data);
             mLineChart.invalidate(); // refresh
         }
